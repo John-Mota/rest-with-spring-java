@@ -7,7 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.websocket.server.PathParam;
+import br.com.johnmota.rest.excepitions.UnsuportedMathExceptions;
+
 
 @RestController
 public class MathController {
@@ -20,10 +21,22 @@ public class MathController {
             @PathVariable(value = "numberTwo") String numberTwo
     ) throws Exception {
         if (!isNumeric(numberOne) || !isNumeric(numberTwo)) {
-            throw new Exception("Parameters are not numeric");
+            throw new UnsuportedMathExceptions("Please set a numeric value!");
         }
 
         return convertDouble(numberOne) + convertDouble(numberTwo);
+    }
+
+    @RequestMapping(value = "/subtract/{numberOne}/{numberTwo}", method=RequestMethod.GET )
+    public Double subtract(
+            @PathVariable(value = "numberOne") String numberOne,
+            @PathVariable(value = "numberTwo") String numberTwo
+    ) throws Exception {
+        if (!isNumeric(numberOne) || !isNumeric(numberTwo)) {
+            throw new UnsuportedMathExceptions("Please set a numeric value!");
+        }
+
+        return convertDouble(numberOne) - convertDouble(numberTwo);
     }
 
     private Double convertDouble(String strNumber) {
