@@ -1,4 +1,4 @@
-package br.com.johnmota.classes;
+package br.com.johnmota.rest.classes;
 
 public class Greeting {
   

@@ -1,4 +1,4 @@
-package br.com.johnmota.classes;
+package br.com.johnmota.rest.classes;
 
 import java.util.concurrent.atomic.AtomicLong;
 
