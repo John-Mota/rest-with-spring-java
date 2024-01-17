@@ -55,7 +55,7 @@ public class MathController {
         }
         if (isNumeric(numberOne) && isNumeric(numberTwo)) {
             if (Double.parseDouble(numberOne) < Double.parseDouble(numberTwo)) {
-                throw new UnsuportedMathExceptions("O primeiro número deve ser menor que o segundo número!");
+                throw new UnsuportedMathExceptions("O primeiro número deve ser Maior que o segundo número!");
             }
         }
 
