@@ -36,7 +36,42 @@ public class MathController {
             throw new UnsuportedMathExceptions("Please set a numeric value!");
         }
 
+        if (isNumeric(numberOne) && isNumeric(numberTwo)) {
+            if (Double.parseDouble(numberOne) < Double.parseDouble(numberTwo)) {
+                throw new UnsuportedMathExceptions("O primeiro número deve ser menor que o segundo número!");
+            }
+        }
+
         return convertDouble(numberOne) - convertDouble(numberTwo);
+    }
+
+    @RequestMapping(value = "/divider/{numberOne}/{numberTwo}", method=RequestMethod.GET )
+    public Double divider(
+            @PathVariable(value = "numberOne") String numberOne,
+            @PathVariable(value = "numberTwo") String numberTwo
+    ) throws Exception {
+        if (!isNumeric(numberOne) || !isNumeric(numberTwo)) {
+            throw new UnsuportedMathExceptions("Please set a numeric value!");
+        }
+        if (isNumeric(numberOne) && isNumeric(numberTwo)) {
+            if (Double.parseDouble(numberOne) < Double.parseDouble(numberTwo)) {
+                throw new UnsuportedMathExceptions("O primeiro número deve ser menor que o segundo número!");
+            }
+        }
+
+        return convertDouble(numberOne) / convertDouble(numberTwo);
+    }
+
+    @RequestMapping(value = "/multiply/{numberOne}/{numberTwo}", method=RequestMethod.GET )
+    public Double multiply(
+            @PathVariable(value = "numberOne") String numberOne,
+            @PathVariable(value = "numberTwo") String numberTwo
+    ) throws Exception {
+        if (!isNumeric(numberOne) || !isNumeric(numberTwo)) {
+            throw new UnsuportedMathExceptions("Please set a numeric value!");
+        }
+
+        return convertDouble(numberOne) * convertDouble(numberTwo);
     }
 
     private Double convertDouble(String strNumber) {
