@@ -10,21 +10,25 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.johnmota.rest.excepitions.UnsuportedMathExceptions;
 
 
+
+
 @RestController
 public class MathController {
 
-    private static final AtomicLong counter = new AtomicLong();
+    private final AtomicLong counter = new AtomicLong();
 
-    @RequestMapping(value = "/sum/{numberOne}/{numberTwo}", method=RequestMethod.GET )
+    private SimpleMath math = new SimpleMath();
+
+   @RequestMapping(value = "/sum/{numberOne}/{numberTwo}", method=RequestMethod.GET )
     public Double sum(
             @PathVariable(value = "numberOne") String numberOne,
             @PathVariable(value = "numberTwo") String numberTwo
     ) throws Exception {
-        if (!isNumeric(numberOne) || !isNumeric(numberTwo)) {
+        if (!ConvertNumber.isNumeric(numberOne) || !ConvertNumber.isNumeric(numberTwo)) {
             throw new UnsuportedMathExceptions("Please set a numeric value!");
         }
 
-        return convertDouble(numberOne) + convertDouble(numberTwo);
+        return math.sum(ConvertNumber.convertDouble(numberOne), ConvertNumber.convertDouble(numberTwo));
     }
 
     @RequestMapping(value = "/subtract/{numberOne}/{numberTwo}", method=RequestMethod.GET )
@@ -32,17 +36,17 @@ public class MathController {
             @PathVariable(value = "numberOne") String numberOne,
             @PathVariable(value = "numberTwo") String numberTwo
     ) throws Exception {
-        if (!isNumeric(numberOne) || !isNumeric(numberTwo)) {
+        if (!ConvertNumber.isNumeric(numberOne) || !ConvertNumber.isNumeric(numberTwo)) {
             throw new UnsuportedMathExceptions("Please set a numeric value!");
         }
 
-        if (isNumeric(numberOne) && isNumeric(numberTwo)) {
+        if (ConvertNumber.isNumeric(numberOne) && ConvertNumber.isNumeric(numberTwo)) {
             if (Double.parseDouble(numberOne) < Double.parseDouble(numberTwo)) {
                 throw new UnsuportedMathExceptions("O primeiro número deve ser menor que o segundo número!");
             }
         }
 
-        return convertDouble(numberOne) - convertDouble(numberTwo);
+        return math.subtract(ConvertNumber.convertDouble(numberOne), ConvertNumber.convertDouble(numberTwo));
     }
 
     @RequestMapping(value = "/divider/{numberOne}/{numberTwo}", method=RequestMethod.GET )
@@ -50,16 +54,16 @@ public class MathController {
             @PathVariable(value = "numberOne") String numberOne,
             @PathVariable(value = "numberTwo") String numberTwo
     ) throws Exception {
-        if (!isNumeric(numberOne) || !isNumeric(numberTwo)) {
+        if (!ConvertNumber.isNumeric(numberOne) || !ConvertNumber.isNumeric(numberTwo)) {
             throw new UnsuportedMathExceptions("Please set a numeric value!");
         }
-        if (isNumeric(numberOne) && isNumeric(numberTwo)) {
+        if (ConvertNumber.isNumeric(numberOne) && ConvertNumber.isNumeric(numberTwo)) {
             if (Double.parseDouble(numberOne) < Double.parseDouble(numberTwo)) {
                 throw new UnsuportedMathExceptions("O primeiro número deve ser Maior que o segundo número!");
             }
         }
 
-        return convertDouble(numberOne) / convertDouble(numberTwo);
+        return math.divider(ConvertNumber.convertDouble(numberOne), ConvertNumber.convertDouble(numberTwo));
     }
 
     @RequestMapping(value = "/multiply/{numberOne}/{numberTwo}", method=RequestMethod.GET )
@@ -67,29 +71,11 @@ public class MathController {
             @PathVariable(value = "numberOne") String numberOne,
             @PathVariable(value = "numberTwo") String numberTwo
     ) throws Exception {
-        if (!isNumeric(numberOne) || !isNumeric(numberTwo)) {
+        if (!ConvertNumber.isNumeric(numberOne) || !ConvertNumber.isNumeric(numberTwo)) {
             throw new UnsuportedMathExceptions("Please set a numeric value!");
         }
 
-        return convertDouble(numberOne) * convertDouble(numberTwo);
+        return math.multiply(ConvertNumber.convertDouble(numberOne), ConvertNumber.convertDouble(numberTwo));
     }
-
-    private Double convertDouble(String strNumber) {
-        try {
-            if(strNumber == null) return 0D;
-            String number = strNumber.replaceAll(",", ".");
-            if(isNumeric(number)) return Double.parseDouble(number);
-            return 0D;
-        } catch (NumberFormatException e) {
-            throw new UnsupportedOperationException("Conversion to Double failed", e);
-        }
-        
-    }
-
-    private boolean isNumeric(String strNumber) {
-        if(strNumber == null) return false;
-        String number = strNumber.replaceAll(",", ".");
-        return number.matches("[-+]?[0-9]*\\.?[0-9]+");
-
-    }
+    
 }
