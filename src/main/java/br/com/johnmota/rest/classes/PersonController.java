@@ -68,6 +68,15 @@ public class PersonController {
           return "Person with ID " + id + " not found.";
         }
       }
+
+    @RequestMapping(
+      value = "/update/{id}",
+      method = RequestMethod.PUT,
+      produces = "application/json",
+      consumes = "application/json")
+      public Person updatePerson(@PathVariable String id, @RequestBody Person person) throws IOException {
+        return service.updatePerson(id, person);
+    }
     
     
 }

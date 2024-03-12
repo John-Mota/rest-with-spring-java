@@ -53,5 +53,23 @@ public class PersonRepository {
         }
         return false; // Retorna false se a pessoa não for encontrada
     }
+
+    public static Person updatePerson(String id, Person person) throws IOException {
+        List<Person> persons = getAllPersons();
+        for (Person p : persons) {
+            if (String.valueOf(p.getId()).equals(id)) {
+                p.setFirstName(person.getFirstName());
+                p.setLastName(person.getLastName());
+                p.setAddres(person.getAddres()); // Corrigido: alterado de "addres" para "address"
+                p.setGener(person.getGener()); // Corrigido: alterado de "gener" para "gender"
+                p.setAge(person.getAge());
+                saveAllPersons(persons);
+                return p;
+            }
+        }
+        return null; // Tratar caso o ID não seja encontrado
+    }
+
+
     
   }

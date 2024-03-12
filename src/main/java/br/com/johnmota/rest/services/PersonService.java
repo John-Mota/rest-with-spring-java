@@ -48,27 +48,32 @@ public class PersonService {
     persons.add(newPerson);
     PersonRepository.saveAllPersons(persons);
     return newPerson;
-}
-
-private long generateUniqueId(List<Person> persons) {
-  if (persons.isEmpty()) {
-      return 1L; // Retorna 1 se a lista de pessoas estiver vazia
   }
-  
-  long maxId = persons.stream()
-                      .mapToLong(Person::getId)
-                      .max()
-                      .orElse(0L);
-  
-  return maxId + 1;
-}
 
-public Person getPersonById(String id) throws IOException {
-  return PersonRepository.getPersonById(id);
-}
+  private long generateUniqueId(List<Person> persons) {
+    if (persons.isEmpty()) {
+        return 1L; // Retorna 1 se a lista de pessoas estiver vazia
+    }
+    
+    long maxId = persons.stream()
+                        .mapToLong(Person::getId)
+                        .max()
+                        .orElse(0L);
+    
+    return maxId + 1;
+  }
 
-public boolean deletePersonById(String id) throws IOException {
-  return PersonRepository.deletePersonById(id);
-}
+  public Person getPersonById(String id) throws IOException {
+    return PersonRepository.getPersonById(id);
+  }
+
+  public boolean deletePersonById(String id) throws IOException {
+    return PersonRepository.deletePersonById(id);
+  }
+
+  public Person updatePerson(String id, Person person) throws IOException {
+    return PersonRepository.updatePerson(id, person);
+  }
+
 
 }
