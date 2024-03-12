@@ -23,13 +23,7 @@ public class PersonController {
   @Autowired
   private PersonService service;
   
-  @RequestMapping(
-    value = "/{id}", 
-    method=RequestMethod.GET,
-    produces = "application/json")
-  public Person findById(@PathVariable(value = "id") String id) throws Exception {
-      return service.findById(id);
-  }
+ 
 
   @RequestMapping(
     value = "/add",
@@ -41,7 +35,7 @@ public class PersonController {
   }
 
 @RequestMapping(
-  value = "/all",
+  
   method = RequestMethod.GET,
   produces = "application/json")
   public List<Person> getAllPersons() throws IOException {
@@ -49,7 +43,7 @@ public class PersonController {
   }
 
   @RequestMapping(
-    value = "/all/{id}",
+    value = "/{id}",
     method = RequestMethod.GET,
     produces = "application/json")
     public Person getPersonById(@PathVariable(value = "id") String id) throws IOException {
