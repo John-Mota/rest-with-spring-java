@@ -41,4 +41,17 @@ public class PersonRepository {
         }
         return null;
     }
+
+    public static boolean deletePersonById(String id) throws IOException {
+        List<Person> persons = getAllPersons();
+        for (Person person : persons) {
+            if (String.valueOf(person.getId()).equals(id)) {
+                persons.remove(person);
+                saveAllPersons(persons);
+                return true; // Retorna true se a pessoa for excluída com sucesso
+            }
+        }
+        return false; // Retorna false se a pessoa não for encontrada
+    }
+    
   }

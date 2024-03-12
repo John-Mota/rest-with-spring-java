@@ -67,4 +67,8 @@ public Person getPersonById(String id) throws IOException {
   return PersonRepository.getPersonById(id);
 }
 
+public boolean deletePersonById(String id) throws IOException {
+  return PersonRepository.deletePersonById(id);
+}
+
 }

@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.johnmota.rest.models.Person;
 import br.com.johnmota.rest.services.PersonService;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 @RestController
@@ -54,5 +56,18 @@ public class PersonController {
       return service.getPersonById(id);
     }
   
-
+    @RequestMapping(
+      value = "/delete/{id}", 
+      method = RequestMethod.DELETE)
+      public String deletePersonById(@PathVariable String id) throws IOException {
+        boolean deleted = service.deletePersonById(id);
+        
+        if (deleted) {
+          return "Person with ID " + id + " deleted successfully.";
+        } else {
+          return "Person with ID " + id + " not found.";
+        }
+      }
+    
+    
 }
