@@ -31,4 +31,14 @@ public class PersonRepository {
             objectMapper.writeValue(writer, persons);
         }
     }
+
+    public static Person getPersonById (String id) throws IOException {
+        List<Person> persons = getAllPersons();
+        for (Person person : persons) {
+            if (String.valueOf(person.getId()).equals(id)) {
+                return person;
+            }
+        }
+        return null;
+    }
   }

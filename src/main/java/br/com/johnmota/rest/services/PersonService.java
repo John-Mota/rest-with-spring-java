@@ -20,6 +20,7 @@ public class PersonService {
   public List<Person> getAllPersons() throws IOException {
         return PersonRepository.getAllPersons();
     }
+    
   public Person findById(String id) {
 
     logger.info("Finding one person");
@@ -36,8 +37,9 @@ public class PersonService {
   public Person addPerson(String firstName, String lastName, String address, String gender, int age) throws IOException {
     logger.info("Adding a new person");
     List<Person> persons = PersonRepository.getAllPersons();
+    long newId = generateUniqueId(persons); 
     Person newPerson = new Person();
-    newPerson.setId(counter.incrementAndGet());
+    newPerson.setId(newId);
     newPerson.setFirstName(firstName);
     newPerson.setLastName(lastName);
     newPerson.setAddres(address);
@@ -47,4 +49,22 @@ public class PersonService {
     PersonRepository.saveAllPersons(persons);
     return newPerson;
 }
+
+private long generateUniqueId(List<Person> persons) {
+  if (persons.isEmpty()) {
+      return 1L; // Retorna 1 se a lista de pessoas estiver vazia
+  }
+  
+  long maxId = persons.stream()
+                      .mapToLong(Person::getId)
+                      .max()
+                      .orElse(0L);
+  
+  return maxId + 1;
+}
+
+public Person getPersonById(String id) throws IOException {
+  return PersonRepository.getPersonById(id);
+}
+
 }

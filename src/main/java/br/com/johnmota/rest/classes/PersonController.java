@@ -1,5 +1,8 @@
 package br.com.johnmota.rest.classes;
 
+import java.io.IOException;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,8 +34,25 @@ public class PersonController {
     method = RequestMethod.POST,
     produces = "application/json",
     consumes = "application/json")
-public Person addPerson(@RequestBody Person person) throws Exception {
-    return service.addPerson(person.getFirstName(), person.getLastName(), person.getAddres(), person.getGener(), person.getAge());
-}
+  public Person addPerson(@RequestBody Person person) throws Exception {
+      return service.addPerson(person.getFirstName(), person.getLastName(), person.getAddres(), person.getGener(), person.getAge());
+  }
+
+@RequestMapping(
+  value = "/all",
+  method = RequestMethod.GET,
+  produces = "application/json")
+  public List<Person> getAllPersons() throws IOException {
+    return service.getAllPersons();
+  }
+
+  @RequestMapping(
+    value = "/all/{id}",
+    method = RequestMethod.GET,
+    produces = "application/json")
+    public Person getPersonById(@PathVariable(value = "id") String id) throws IOException {
+      return service.getPersonById(id);
+    }
+  
 
 }
