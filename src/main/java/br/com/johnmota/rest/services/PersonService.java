@@ -37,13 +37,19 @@ public class PersonService {
     return personRepository.save(person);
   }
 
-  @SuppressWarnings("null")
+
   public void deletePersonById(Long id) {
     logger.info("Deleting person with id: " + id);
-    var entytie = personRepository.findById(id)
-      .orElseThrow(() -> new ResourceNotFounExeption("Person not found"));
-    personRepository.delete(entytie);
-  }
+    try {
+        var entity = personRepository.findById(id)
+                .orElseThrow();
+        personRepository.delete(entity);
+    } catch (ResourceNotFounExeption ex) {
+        (logger).warning(ex.getMessage());
+        throw ex; 
+    }
+}
+
 
   public Person update(Long id, Person person) {
     logger.info("Updating person with id: " + id);
