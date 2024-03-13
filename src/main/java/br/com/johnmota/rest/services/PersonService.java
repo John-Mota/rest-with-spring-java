@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.johnmota.rest.excepitions.ResourceNotFounExeption;
 import br.com.johnmota.rest.interfaces.PersonRepository;
 import br.com.johnmota.rest.models.Person;
 
@@ -20,7 +21,7 @@ public class PersonService {
   @Autowired
   PersonRepository personRepository;
 
-  public List<Person> getAllPersons() {
+  public List<Person> findAll() {
     logger.info("Getting all persons");
     return personRepository.findAll();
   }
@@ -30,26 +31,28 @@ public class PersonService {
     return personRepository.findById(id);
   }
 
-  public Person addPerson(Person person) {
+  @SuppressWarnings("null")
+  public Person created(Person person) {
     logger.info("Adding a new person");
     return personRepository.save(person);
   }
 
-  public boolean deletePersonById(Long id) {
+  @SuppressWarnings("null")
+  public void deletePersonById(Long id) {
     logger.info("Deleting person with id: " + id);
-    if (personRepository.existsById(id)) {
-      personRepository.deleteById(id);
-      return true;
-    }
-    return false;
+    var entytie = personRepository.findById(id)
+      .orElseThrow(() -> new ResourceNotFounExeption("Person not found"));
+    personRepository.delete(entytie);
   }
 
-  public Person updatePerson(Long id, Person person) {
+  public Person update(Long id, Person person) {
     logger.info("Updating person with id: " + id);
-    if (personRepository.existsById(id)) {
-      person.setId(id);
-      return personRepository.save(person);
-    }
-    return null; // or throw an exception if person with given id doesn't exist
+    var entytie = personRepository.findById(person.getId())
+      .orElseThrow(() -> new ResourceNotFounExeption("Person not found"));
+     entytie.setFirstName(person.getFirstName());
+     entytie.setLastName(person.getLastName());
+     entytie.setAddres(person.getAddres());
+     entytie.setGener(person.getGener());
+      return personRepository.save(entytie);
   }
 }
