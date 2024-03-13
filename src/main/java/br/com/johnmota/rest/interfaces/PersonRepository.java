@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import br.com.johnmota.rest.models.Person;
 
-@Repository
+
 public interface PersonRepository extends JpaRepository<Person, Long> {}
 
 
