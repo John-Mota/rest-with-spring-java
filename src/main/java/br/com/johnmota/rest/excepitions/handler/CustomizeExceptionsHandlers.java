@@ -10,16 +10,16 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import br.com.johnmota.rest.excepitions.ExcepitionsResponse;
-import br.com.johnmota.rest.excepitions.UnsuportedMathExceptions;
+import br.com.johnmota.rest.excepitions.ExceptionResponse;
+import br.com.johnmota.rest.excepitions.ResourceNotFounExeption;
 
 @ControllerAdvice
 @RestController
 public class CustomizeExceptionsHandlers extends ResponseEntityExceptionHandler{
 
-  @ExceptionHandler(UnsuportedMathExceptions.class)
-  public final ResponseEntity<ExcepitionsResponse> handleBadRequestExceptions(Exception ex, WebRequest request){
-    ExcepitionsResponse ExcepitionsResponse = new ExcepitionsResponse(
+  @ExceptionHandler(ResourceNotFounExeption.class)
+  public final ResponseEntity<ExceptionResponse> handleBadRequestExceptions(Exception ex, WebRequest request){
+    ExceptionResponse ExcepitionsResponse = new ExceptionResponse(
       new Date(), 
      ex.getMessage(), 
      request.getDescription(false));
@@ -27,8 +27,8 @@ public class CustomizeExceptionsHandlers extends ResponseEntityExceptionHandler{
   }
 
   @ExceptionHandler(Exception.class)
-  public final ResponseEntity<ExcepitionsResponse> handleAllExceptions(Exception ex, WebRequest request){
-    ExcepitionsResponse ExcepitionsResponse = new ExcepitionsResponse(
+  public final ResponseEntity<ExceptionResponse> handleAllExceptions(Exception ex, WebRequest request){
+    ExceptionResponse ExcepitionsResponse = new ExceptionResponse(
       new Date(), 
      ex.getMessage(), 
      request.getDescription(false));

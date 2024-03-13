@@ -1,79 +1,55 @@
 package br.com.johnmota.rest.services;
 
-import java.io.IOException;
+
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.Optional;
 
 import java.util.logging.Logger;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.com.johnmota.rest.classes.PersonRepository;
+import br.com.johnmota.rest.interfaces.PersonRepository;
 import br.com.johnmota.rest.models.Person;
 
 @Service
 public class PersonService {
   
-  private final AtomicLong counter = new AtomicLong();
   private Logger logger = Logger.getLogger(PersonService.class.getName());
 
-  public List<Person> getAllPersons() throws IOException {
-        return PersonRepository.getAllPersons();
-    }
-    
-  public Person findById(String id) {
+  @Autowired
+  PersonRepository personRepository;
 
+  public List<Person> getAllPersons() {
+    logger.info("Getting all persons");
+    return personRepository.findAll();
+  }
+    
+  public Optional<Person> findById(Long id) {
     logger.info("Finding one person");
-    Person person = new Person();
-    person.setId(counter.incrementAndGet());
-    person.setFirstName("John");
-    person.setLastName("Mota");
-    person.setAddres("Fortaleza - Ceara");
-    person.setGener("Masculino");
-    person.setAge(32);
-    return person;
+    return personRepository.findById(id);
   }
 
-  public Person addPerson(String firstName, String lastName, String address, String gender, int age) throws IOException {
+  public Person addPerson(Person person) {
     logger.info("Adding a new person");
-    List<Person> persons = PersonRepository.getAllPersons();
-    long newId = generateUniqueId(persons); 
-    Person newPerson = new Person();
-    newPerson.setId(newId);
-    newPerson.setFirstName(firstName);
-    newPerson.setLastName(lastName);
-    newPerson.setAddres(address);
-    newPerson.setGener(gender);
-    newPerson.setAge(age);
-    persons.add(newPerson);
-    PersonRepository.saveAllPersons(persons);
-    return newPerson;
+    return personRepository.save(person);
   }
 
-  private long generateUniqueId(List<Person> persons) {
-    if (persons.isEmpty()) {
-        return 1L; // Retorna 1 se a lista de pessoas estiver vazia
+  public boolean deletePersonById(Long id) {
+    logger.info("Deleting person with id: " + id);
+    if (personRepository.existsById(id)) {
+      personRepository.deleteById(id);
+      return true;
     }
-    
-    long maxId = persons.stream()
-                        .mapToLong(Person::getId)
-                        .max()
-                        .orElse(0L);
-    
-    return maxId + 1;
+    return false;
   }
 
-  public Person getPersonById(String id) throws IOException {
-    return PersonRepository.getPersonById(id);
+  public Person updatePerson(Long id, Person person) {
+    logger.info("Updating person with id: " + id);
+    if (personRepository.existsById(id)) {
+      person.setId(id);
+      return personRepository.save(person);
+    }
+    return null; // or throw an exception if person with given id doesn't exist
   }
-
-  public boolean deletePersonById(String id) throws IOException {
-    return PersonRepository.deletePersonById(id);
-  }
-
-  public Person updatePerson(String id, Person person) throws IOException {
-    return PersonRepository.updatePerson(id, person);
-  }
-
-
 }
