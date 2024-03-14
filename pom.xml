@@ -58,7 +58,7 @@
 					<artifactId>maven-compiler-plugin</artifactId>
 					<version>3.11.0</version> <!-- Use a versão mais recente que suporta a versão 21 do Java -->
 					<configuration>
-							<release>21</release> <!-- Defina a versão do release do Java -->
+							<release>11</release> <!-- Defina a versão do release do Java -->
 					</configuration>
 			</plugin>
 
