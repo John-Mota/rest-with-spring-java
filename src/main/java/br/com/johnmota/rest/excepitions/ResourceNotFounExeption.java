@@ -12,5 +12,4 @@ public class ResourceNotFounExeption extends RuntimeException{
         super(message);
     }
     
-
 }
